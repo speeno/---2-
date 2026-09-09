@@ -79,6 +79,10 @@ Verification status (2026-09-09): Word opens the files and reads every text box 
 
 The user's `output/*_세로쓰기.docx` files reference fonts named `GenealogyRHSBKS`, `GenealogyRHSB01`, `GenealogyRHSBSY`, `GenealogyRHSMKS` (apparently extracted from the PDF's embedded fonts) that are not installed anywhere on this Mac, so Word and browsers both substitute; ask the user for the font files if glyph-identical output matters.
 
+## Git
+
+The directory became a git repository on 2026-09-09 (remote `origin` = https://github.com/speeno/---2-.git, branch `main`, nothing pushed yet). The two source PDFs are listed in `.gitignore` and were removed from every commit with `git filter-branch` because the 165 MB volume exceeds GitHub's 100 MB file limit. Pitfall: `filter-branch` deletes files it removed from history from the working tree too; the PDFs were restored byte-for-byte from `refs/backup/before-pdf-removal`, which still holds the pre-rewrite history (and the big blobs). Once the user confirms the push, that ref can be dropped with `git update-ref -d refs/backup/before-pdf-removal && git gc --prune=now`. Never `git push --mirror` while it exists. `tmp/` (the user's own experiments, including a vendored fontTools) and `.DS_Store` are tracked; nobody has asked to change that.
+
 ## Known dead ends (tested 2026-09-09)
 
 - LibreOffice `--infilter="writer_pdf_import"` to DOCX: on vol. 1 it embeds the stencil glyphs as transparent PNG masks that render blank; on vol. 2 it emits one text box per character on an A4 page with the grid misplaced. Neither preserves layout.
